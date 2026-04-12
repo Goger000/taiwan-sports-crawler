@@ -29,7 +29,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 執行爬蟲
+      - name: 執行爬蟲（部分失敗不中斷）
+        id: crawl
+        continue-on-error: true
         env:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -38,10 +40,22 @@ jobs:
           LEAGUE="${{ github.event.inputs.league }}"
           if [ -n "$LEAGUE" ]; then
             echo "執行指定聯賽：$LEAGUE"
-            node src/index.js $LEAGUE
+            node src/index.js $LEAGUE || true
           else
-            echo "執行全部聯賽"
-            node src/index.js
+            echo "執行全部聯賽（逐一執行，失敗不中斷）"
+            # 個別執行，記錄失敗但繼續
+            node src/cpbl.js || echo "⚠️ CPBL 爬蟲失敗（可能被 IP 封鎖，將使用已提交的快取資料）"
+            node src/tpbl.js || echo "⚠️ TPBL 爬蟲失敗"
+            node src/plg.js  || echo "⚠️ PLG 爬蟲失敗"
+          fi
+
+      - name: 合併 _headers 與資料
+        run: |
+          cp _headers data/_headers
+          # 若 CPBL 未更新（被封鎖），使用 git 快取版本
+          if [ ! -f data/cpbl.json ]; then
+            echo "⚠️ cpbl.json 不存在，從 git 暫存區恢復"
+            git show HEAD:data/cpbl.json > data/cpbl.json 2>/dev/null || echo "{\"league\":\"cpbl\",\"sport_type\":\"baseball\",\"updated_at\":\"$(date -u +%Y-%m-%dT%H:%M:%S+08:00)\",\"games\":[]}" > data/cpbl.json
           fi
 
       - name: Schema 驗證

@@ -1,5 +1,6 @@
 node_modules/
-data/cpbl.json
+# 資料檔由 GitHub Actions 生成並部署至 Cloudflare Pages
+# CPBL 因 IP 封鎖問題需本機執行後手動提交，故不排除
 data/tpbl.json
 data/plg.json
 .env
