@@ -53,13 +53,20 @@ function normalizeVenue(abbe) {
 
 /**
  * 將 CPBL PresentStatus 轉換為 Schema status
- * PresentStatus: 0=未來賽事, 1=已結束, 2=進行中, 3=延賽, 4=取消
+ * PresentStatus: 1=排程中（含未來與已完賽）, 2=進行中, 3=延賽, 4=取消
+ * 注意：PresentStatus===1 對所有場次（含未來）都回傳 1，
+ *       必須額外檢查分數來判斷是否真的完賽（棒球不可能以 0:0 正常結束）
  */
-function toStatus(presentStatus) {
+function toStatus(presentStatus, homeScore, visitingScore) {
   if (presentStatus === 3) return 'postponed';
   if (presentStatus === 4) return 'cancelled';
   if (presentStatus === 2) return 'live';
-  if (presentStatus === 1) return 'final';
+  if (presentStatus === 1) {
+    const hs = Number(homeScore) || 0;
+    const vs = Number(visitingScore) || 0;
+    if (hs > 0 || vs > 0) return 'final';
+    return 'scheduled'; // 0:0 代表尚未開賽
+  }
   return 'scheduled';
 }
 
@@ -175,9 +182,9 @@ async function crawl() {
         home_team: g.HomeTeamName || '待確認',
         away_team: g.VisitingTeamName || '待確認',
         venue: normalizeVenue(g.FieldAbbe),
-        status: toStatus(g.PresentStatus),
-        home_score: g.PresentStatus === 1 && g.HomeScore != null ? Number(g.HomeScore) : null,
-        away_score: g.PresentStatus === 1 && g.VisitingScore != null ? Number(g.VisitingScore) : null,
+        status: toStatus(g.PresentStatus, g.HomeScore, g.VisitingScore),
+        home_score: toStatus(g.PresentStatus, g.HomeScore, g.VisitingScore) === 'final' ? Number(g.HomeScore) : null,
+        away_score: toStatus(g.PresentStatus, g.HomeScore, g.VisitingScore) === 'final' ? Number(g.VisitingScore) : null,
         inning: null,
         broadcast: [],
         ticket_url: null,

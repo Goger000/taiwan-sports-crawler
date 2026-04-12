@@ -3,7 +3,7 @@
 # 部署時 data/ 目錄為網站根目錄，檔案直接在 /*.json
 
 /*.json
-  Access-Control-Allow-Origin: https://taiwan-sports-hub.pages.dev
+  Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, OPTIONS
   Cache-Control: public, max-age=300, stale-while-revalidate=600
   Content-Type: application/json; charset=utf-8
