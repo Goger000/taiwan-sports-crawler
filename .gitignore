@@ -1,0 +1,6 @@
+node_modules/
+data/cpbl.json
+data/tpbl.json
+data/plg.json
+.env
+*.log

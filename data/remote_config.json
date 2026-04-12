@@ -1,0 +1,31 @@
+{
+  "_comment": "所有可調參數集中於此檔案。修改後 push 至 GitHub，CI/CD 自動部署至 Cloudflare Pages CDN 生效。",
+  "vip_pricing": {
+    "monthly_twd": 0,
+    "yearly_twd": 0,
+    "trial_days": 7,
+    "currency": "TWD"
+  },
+  "feature_flags": {
+    "vip_enabled": false,
+    "ads_enabled": false,
+    "community_enabled": true,
+    "maintenance_mode": false
+  },
+  "rate_limits": {
+    "new_user_cooldown_seconds": 120,
+    "new_user_daily_post_limit": 5,
+    "new_user_threshold_hours": 72
+  },
+  "community_thresholds": {
+    "auto_fold_boo_ratio": 0.30,
+    "auto_hide_boo_ratio": 0.50,
+    "auto_hide_min_reports": 10
+  },
+  "crawler": {
+    "game_live_interval_seconds": 90,
+    "game_live_jitter_seconds": 15,
+    "pre_game_interval_seconds": 300,
+    "daily_interval_seconds": 1800
+  }
+}

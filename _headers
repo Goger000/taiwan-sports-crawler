@@ -1,0 +1,13 @@
+# Cloudflare Pages _headers
+# 設定 CORS 允許 Flutter Web 跨域讀取靜態 JSON
+
+/data/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Cache-Control: public, max-age=300, stale-while-revalidate=600
+  Content-Type: application/json; charset=utf-8
+
+/*.json
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Cache-Control: public, max-age=300, stale-while-revalidate=600

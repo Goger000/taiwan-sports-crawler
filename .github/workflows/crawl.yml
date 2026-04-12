@@ -1,0 +1,72 @@
+name: 賽程爬蟲排程
+
+on:
+  schedule:
+    # 每日 00:00 台灣時間（UTC 16:00）- 一般賽程爬蟲
+    - cron: '0 16 * * *'
+    # 賽前高頻：台灣時間 17:00 / 18:00 / 19:00（UTC 9/10/11）
+    - cron: '0 9 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 11 * * *'
+  # 允許手動觸發
+  workflow_dispatch:
+    inputs:
+      league:
+        description: '指定聯賽（cpbl / tpbl / plg，留空執行全部）'
+        required: false
+        default: ''
+
+jobs:
+  crawl:
+    name: 執行爬蟲
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: crawler/package.json
+
+      - name: 執行爬蟲
+        working-directory: crawler
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          LEAGUE="${{ github.event.inputs.league }}"
+          if [ -n "$LEAGUE" ]; then
+            echo "執行指定聯賽：$LEAGUE"
+            node src/index.js $LEAGUE
+          else
+            echo "執行全部聯賽"
+            node src/index.js
+          fi
+
+      - name: Schema 驗證
+        working-directory: crawler
+        run: node ../verify/schema-check.js
+
+      - name: 部署至 Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy data --project-name=taiwan-sports-data --branch=main
+
+      - name: 通知成功
+        if: success()
+        run: echo "✅ 爬蟲與部署成功完成"
+
+      - name: 爬蟲失敗通知
+        if: failure()
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: |
+          curl -s -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\":\"🚨 GitHub Actions 爬蟲 Workflow 失敗\\n時間：$(date '+%Y-%m-%d %H:%M:%S') UTC\"}"

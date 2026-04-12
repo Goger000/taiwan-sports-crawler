@@ -1,0 +1,19 @@
+{
+  "name": "taiwan-pro-sports-hub-crawler",
+  "version": "1.0.0",
+  "description": "Taiwan Pro Sports Hub - 賽程爬蟲（公開資料轉換腳本）",
+  "private": true,
+  "scripts": {
+    "crawl": "node src/index.js",
+    "crawl:cpbl": "node src/index.js cpbl",
+    "crawl:tpbl": "node src/index.js tpbl",
+    "crawl:plg": "node src/index.js plg",
+    "verify:schema": "node ../verify/schema-check.js",
+    "verify:cors": "node ../verify/cors-check.js",
+    "verify:all": "npm run verify:schema && npm run verify:cors"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
