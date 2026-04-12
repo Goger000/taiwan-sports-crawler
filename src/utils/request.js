@@ -11,6 +11,7 @@
 
 const https = require('https');
 const http = require('http');
+const zlib = require('zlib');
 const { URL } = require('url');
 
 const USER_AGENTS = [
@@ -77,17 +78,27 @@ function get(url, options = {}) {
     };
 
     const req = lib.request(reqOptions, (res) => {
+      const encoding = res.headers['content-encoding'];
+      let stream = res;
+
+      if (encoding === 'gzip') {
+        stream = res.pipe(zlib.createGunzip());
+      } else if (encoding === 'br') {
+        stream = res.pipe(zlib.createBrotliDecompress());
+      } else if (encoding === 'deflate') {
+        stream = res.pipe(zlib.createInflate());
+      }
+
       const chunks = [];
-      res.on('data', chunk => chunks.push(chunk));
-      res.on('end', () => {
-        const buf = Buffer.concat(chunks);
-        // 處理 gzip（Node 18+ 原生支援 zlib）
+      stream.on('data', chunk => chunks.push(chunk));
+      stream.on('end', () => {
         resolve({
           statusCode: res.statusCode,
           headers: res.headers,
-          body: buf.toString('utf-8'),
+          body: Buffer.concat(chunks).toString('utf-8'),
         });
       });
+      stream.on('error', reject);
     });
 
     req.on('error', reject);

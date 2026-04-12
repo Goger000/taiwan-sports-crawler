@@ -78,8 +78,6 @@ function validateLeagueData(data) {
   }
   if (!Array.isArray(data.games)) {
     errors.push(`games 必須為陣列`);
-  } else if (data.games.length === 0) {
-    errors.push(`games 陣列不可為空`);
   } else {
     data.games.forEach((game, i) => errors.push(...validateGame(game, i)));
   }
