@@ -25,13 +25,13 @@
 /**
  * 聯賽資料輸出根結構
  * @typedef {Object} LeagueData
- * @property {string} league      - 聯賽識別碼：cpbl | tpbl | plg | tvl
+ * @property {string} league      - 聯賽識別碼：cpbl | tpbl | plg
  * @property {string} sport_type  - 運動類型：baseball | basketball | volleyball
  * @property {string} updated_at  - 最後更新時間 ISO 8601（台灣時間 +08:00）
  * @property {Game[]} games       - 比賽清單
  */
 
-const VALID_LEAGUES = ['cpbl', 'tpbl', 'plg', 'tvl'];
+const VALID_LEAGUES = ['cpbl', 'tpbl', 'plg'];
 const VALID_SPORT_TYPES = ['baseball', 'basketball', 'volleyball'];
 const VALID_STATUSES = ['scheduled', 'live', 'final', 'postponed', 'cancelled'];
 
