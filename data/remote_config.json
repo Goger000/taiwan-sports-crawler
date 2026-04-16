@@ -1,5 +1,6 @@
 {
   "_comment": "所有可調參數集中於此檔案。修改後 push 至 GitHub，CI/CD 自動部署至 Cloudflare Pages CDN 生效。",
+  "_ts": "20260416",
   "_pricing_note": "月費/年費設為 0 時 App 顯示「即將開放」佔位文字；設定實際金額後開放訂閱按鈕。Edge Function 使用 SUPABASE secrets 中的 VIP_MONTHLY_TWD / VIP_YEARLY_TWD（需與此一致）。",
   "vip_pricing": {
     "monthly_twd": 99,
