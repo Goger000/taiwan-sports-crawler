@@ -4,7 +4,7 @@ on:
   schedule:
     # 每日 00:00 台灣時間（UTC 16:00）- 一般賽程爬蟲
     - cron: '0 16 * * *'
-    # 賽前高頻：台灣時間 17:00 / 18:00 / 19:00（UTC 9/10/11）
+    # 賽前高頻：台灣時間 17:00 / 18:00 / 19:00（UTC 9/10/11）- 先發名單 + 啦啦隊
     - cron: '0 9 * * *'
     - cron: '0 10 * * *'
     - cron: '0 11 * * *'
@@ -29,7 +29,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 執行爬蟲（部分失敗不中斷）
+      - name: 安裝依賴
+        run: npm ci
+
+      - name: 執行賽程爬蟲（部分失敗不中斷）
         id: crawl
         continue-on-error: true
         env:
@@ -43,20 +46,33 @@ jobs:
             node src/index.js $LEAGUE || true
           else
             echo "執行全部聯賽（逐一執行，失敗不中斷）"
-            # 個別執行，記錄失敗但繼續
             node src/cpbl.js || echo "⚠️ CPBL 爬蟲失敗（可能被 IP 封鎖，將使用已提交的快取資料）"
             node src/tpbl.js || echo "⚠️ TPBL 爬蟲失敗"
             node src/plg.js  || echo "⚠️ PLG 爬蟲失敗"
           fi
 
-      - name: 合併 _headers 與資料
+      - name: 執行啦啦隊班表爬蟲（賽前高頻時段）
+        continue-on-error: true
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: |
+          # 抓取啦啦隊班表，失敗不影響主流程
+          node src/cheerleader.js || echo "⚠️ 啦啦隊爬蟲失敗，使用已有資料"
+
+      - name: 合併 _headers 與靜態資料
         run: |
           cp _headers data/_headers
           # 若 CPBL 未更新（被封鎖），使用 git 快取版本
           if [ ! -f data/cpbl.json ]; then
             echo "⚠️ cpbl.json 不存在，從 git 暫存區恢復"
-            git show HEAD:data/cpbl.json > data/cpbl.json 2>/dev/null || echo "{\"league\":\"cpbl\",\"sport_type\":\"baseball\",\"updated_at\":\"$(date -u +%Y-%m-%dT%H:%M:%S+08:00)\",\"games\":[]}" > data/cpbl.json
+            git show HEAD:data/cpbl.json > data/cpbl.json 2>/dev/null || echo '{"league":"cpbl","sport_type":"baseball","updated_at":"'"$(date -u +%Y-%m-%dT%H:%M:%S+08:00)"'","games":[]}' > data/cpbl.json
           fi
+          # 確保靜態資料檔案存在（venue_info / cheer_guide / food_guide / cheerleader）
+          for f in venue_info cheer_guide food_guide cheerleader; do
+            if [ ! -f "data/${f}.json" ]; then
+              git show HEAD:data/${f}.json > data/${f}.json 2>/dev/null || echo '{}' > data/${f}.json
+            fi
+          done
 
       - name: Schema 驗證
         run: node verify-schema.js

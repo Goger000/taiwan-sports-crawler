@@ -10,9 +10,13 @@
   },
   "feature_flags": {
     "vip_enabled": true,
+    "free_vip_mode": true,
     "ads_enabled": false,
     "community_enabled": true,
     "maintenance_mode": false
+  },
+  "push": {
+    "vapid_public_key": ""
   },
   "rate_limits": {
     "new_user_cooldown_seconds": 120,
