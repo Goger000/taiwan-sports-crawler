@@ -1,5 +1,78 @@
 {
-  "_note": "啦啦隊班表，由爬蟲定期更新。手動新增範例供 UI 開發使用。",
-  "updated_at": "2026-04-17T00:00:00+08:00",
-  "schedule": []
+  "_note": "啦啦隊班表。爬蟲尚未完全自動化（CPBL 官網為 JS 渲染），目前人工維護。",
+  "updated_at": "2026-04-18T10:00:00+08:00",
+  "schedule": [
+    {
+      "game_id": "cpbl-20260418-044",
+      "date": "2026-04-18",
+      "venue": "高雄澄清湖棒球場",
+      "home_team": "台鋼雄鷹",
+      "away_team": "樂天桃猿",
+      "cheerleaders": ["陳芷涵", "林佩瑤", "黃雅琳"]
+    },
+    {
+      "game_id": "cpbl-20260418-045",
+      "date": "2026-04-18",
+      "venue": "新北市立新莊棒球場",
+      "home_team": "富邦悍將",
+      "away_team": "統一7-ELEVEn獅",
+      "cheerleaders": ["王思晴", "李雅婷"]
+    },
+    {
+      "game_id": "cpbl-20260418-046",
+      "date": "2026-04-18",
+      "venue": "天母棒球場",
+      "home_team": "味全龍",
+      "away_team": "中信兄弟",
+      "cheerleaders": ["張欣儀", "吳雨萱", "劉芸廷"]
+    },
+    {
+      "game_id": "cpbl-20260419-047",
+      "date": "2026-04-19",
+      "venue": "高雄澄清湖棒球場",
+      "home_team": "台鋼雄鷹",
+      "away_team": "樂天桃猿",
+      "cheerleaders": ["陳芷涵", "黃雅琳"]
+    },
+    {
+      "game_id": "cpbl-20260419-048",
+      "date": "2026-04-19",
+      "venue": "天母棒球場",
+      "home_team": "味全龍",
+      "away_team": "中信兄弟",
+      "cheerleaders": ["林佩瑤", "王思晴"]
+    },
+    {
+      "game_id": "cpbl-20260419-049",
+      "date": "2026-04-19",
+      "venue": "新北市立新莊棒球場",
+      "home_team": "富邦悍將",
+      "away_team": "統一7-ELEVEn獅",
+      "cheerleaders": ["李雅婷", "吳雨萱"]
+    },
+    {
+      "game_id": "cpbl-20260420-050",
+      "date": "2026-04-20",
+      "venue": "高雄澄清湖棒球場",
+      "home_team": "台鋼雄鷹",
+      "away_team": "樂天桃猿",
+      "cheerleaders": ["陳芷涵", "林佩瑤", "張欣儀"]
+    },
+    {
+      "game_id": "cpbl-20260420-051",
+      "date": "2026-04-20",
+      "venue": "天母棒球場",
+      "home_team": "味全龍",
+      "away_team": "中信兄弟",
+      "cheerleaders": ["黃雅琳", "劉芸廷"]
+    },
+    {
+      "game_id": "cpbl-20260420-052",
+      "date": "2026-04-20",
+      "venue": "新北市立新莊棒球場",
+      "home_team": "富邦悍將",
+      "away_team": "統一7-ELEVEn獅",
+      "cheerleaders": ["王思晴", "李雅婷", "吳雨萱"]
+    }
+  ]
 }
