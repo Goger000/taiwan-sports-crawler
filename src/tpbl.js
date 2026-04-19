@@ -76,7 +76,8 @@ async function crawl() {
         away_score: isCompleted && g.away_team.won_score != null ? Number(g.away_team.won_score) : null,
         inning: null,
         broadcast: [],
-        ticket_url: null,
+        // 職籃購票：TPBL 官網比賽頁面（含購票連結）
+        ticket_url: `https://www.tpbl.basketball/games/${g.id}`,
       };
     })
     .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));

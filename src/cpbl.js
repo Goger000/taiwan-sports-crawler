@@ -165,6 +165,8 @@ async function crawl() {
 
   const rawGames = JSON.parse(result.GameDatas);
   console.log(`[cpbl] 原始資料：${rawGames.length} 場`);
+  // 印出第一筆欄位名稱，確認有無票務欄位
+  if (rawGames.length > 0) console.log('[cpbl] 欄位:', Object.keys(rawGames[0]).join(', '));
 
   // 轉換為 Schema 格式
   const games = rawGames
@@ -187,7 +189,9 @@ async function crawl() {
         away_score: toStatus(g.PresentStatus, g.HomeScore, g.VisitingScore) === 'final' ? Number(g.VisitingScore) : null,
         inning: null,
         broadcast: [],
-        ticket_url: null,
+        // 中職購票：遊戲詳情頁（含官方購票按鈕）
+        // GameSno 即 CPBL 網站 sno 參數，待首次執行後確認欄位
+        ticket_url: `https://www.cpbl.com.tw/games/detail?sno=${g.GameSno}`,
       };
     })
     .sort((a, b) => a.date.localeCompare(b.date));
