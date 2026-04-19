@@ -16,7 +16,7 @@
     "maintenance_mode": false
   },
   "push": {
-    "vapid_public_key": ""
+    "vapid_public_key": "BJk9bFCxsILMWhqpCvc-EONQkbEhQ97rv3VGDB8l7XejkahOM21b_YmwpLigLxVSFx4zRxYsJsDqX38cCOU4P2I"
   },
   "rate_limits": {
     "new_user_cooldown_seconds": 120,
