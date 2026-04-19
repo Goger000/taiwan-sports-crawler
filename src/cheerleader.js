@@ -1,9 +1,9 @@
 /**
- * CPBL 啦啦隊班表爬蟲
- * 從 CPBL 官網抓取各場次出勤啦啦隊員名單，合併至 cheerleader.json
- * 並反向將資料注入對應的 cpbl.json 場次（game.cheerleaders 欄位）
+ * 啦啦隊班表爬蟲
+ * 資料來源：cpblgirls.tw/schedule（靜態 HTML + JSON-LD，無需 Playwright）
  *
- * 執行時機：GitHub Actions 賽前高頻排程（台灣時間 17:00 / 18:00 / 19:00）
+ * 解析頁面裡的 <script type="application/ld+json"> 取得 SportsEvent 陣列，
+ * 再依 date + homeTeam 對應 cpbl.json 的 game_id，寫入 cheerleader.json。
  */
 
 'use strict';
@@ -11,140 +11,132 @@
 const fs = require('fs');
 const path = require('path');
 const { getWithRetry } = require('./utils/request');
-const { sendAlert } = require('./utils/webhook');
 
 const CHEERLEADER_PATH = path.join(__dirname, '../data/cheerleader.json');
 const CPBL_PATH = path.join(__dirname, '../data/cpbl.json');
+const SOURCE_URL = 'https://cpblgirls.tw/schedule';
 
-// 場次頁面解析啦啦隊名單
-// CPBL 場次詳情 URL 格式：https://www.cpbl.com.tw/games/{GameSno}
-// 啦啦隊資訊通常出現在 .cheerleader-name 或 .game-info-cheerleader 區塊
+// 場館名稱正規化（移除「市/縣/市立/縣立」等行政區前綴，方便比對）
+function normalizeVenue(v) {
+  return (v || '')
+    .replace(/^(台北市|新北市|桃園市|台中市|台南市|高雄市|嘉義市|嘉義縣|彰化縣|新竹市|新竹縣|苗栗縣|宜蘭縣|花蓮縣|台東縣)/, '')
+    .replace(/市立|縣立/, '')
+    .trim();
+}
 
-async function fetchCheerleadersForGame(gameSno) {
-  try {
-    const url = `https://www.cpbl.com.tw/games/${gameSno}`;
-    const page = await getWithRetry(url, { referer: 'https://www.cpbl.com.tw/schedule' });
-
-    const names = [];
-
-    // 解析 cheerleader 區塊（CPBL 官網結構可能隨改版調整）
-    // 嘗試多種選取模式
-    const patterns = [
-      // 模式 A：class="cheer-name" 或 class="cheerleader"
-      /class="cheer(?:leader)?[^"]*"[^>]*>([^<]{2,10})<\/[a-z]+>/gi,
-      // 模式 B：啦啦隊員姓名（中文2-5字）出現在特定區塊
-      /啦啦隊員[：:]\s*([^\n<]{2,50})/gi,
-    ];
-
-    for (const pattern of patterns) {
-      const matches = [...page.body.matchAll(pattern)];
-      for (const m of matches) {
-        const raw = m[1].trim();
-        // 過濾非姓名字串（姓名通常2-5中文字）
-        if (/^[\u4e00-\u9fa5]{2,5}$/.test(raw) && !names.includes(raw)) {
-          names.push(raw);
-        }
-      }
-      if (names.length > 0) break;
-    }
-
-    return names;
-  } catch (_) {
-    return [];
-  }
+// 球隊名稱正規化（移除常見別名差異）
+function normalizeTeam(t) {
+  return (t || '')
+    .replace(/統一7-ELEVEn獅|統一獅/, '統一7-ELEVEn獅')
+    .trim();
 }
 
 async function crawl() {
-  console.log('[cheerleader] 開始抓取啦啦隊班表...');
+  console.log('[cheerleader] 開始從 cpblgirls.tw 抓取啦啦隊班表...');
 
-  // 讀取現有 CPBL 賽程，找出今日或未來3天的場次
+  // ── 抓取來源頁面 ──────────────────────────────────────────────
+  let html;
+  try {
+    const res = await getWithRetry(SOURCE_URL, {
+      referer: 'https://cpblgirls.tw',
+    });
+    html = res.body;
+  } catch (err) {
+    console.error('[cheerleader] 無法取得 cpblgirls.tw 頁面:', err.message);
+    return;
+  }
+
+  // ── 解析 JSON-LD ───────────────────────────────────────────────
+  const ldMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (!ldMatch) {
+    console.warn('[cheerleader] 找不到 JSON-LD，頁面結構可能已變更');
+    return;
+  }
+
+  let events;
+  try {
+    events = JSON.parse(ldMatch[1]);
+    if (!Array.isArray(events)) events = [events];
+  } catch (e) {
+    console.error('[cheerleader] JSON-LD 解析失敗:', e.message);
+    return;
+  }
+
+  console.log(`[cheerleader] 取得 ${events.length} 筆 SportsEvent`);
+
+  // ── 讀取 cpbl.json（用來對應 game_id）────────────────────────
   let cpblData = null;
   try {
     cpblData = JSON.parse(fs.readFileSync(CPBL_PATH, 'utf-8'));
   } catch (_) {
-    console.warn('[cheerleader] 無法讀取 cpbl.json，略過啦啦隊更新');
-    return;
+    console.warn('[cheerleader] 無法讀取 cpbl.json，略過 game_id 對應');
   }
 
-  const now = new Date();
-  const todayStr = now.toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
-  const threeDaysLater = new Date(now);
-  threeDaysLater.setDate(now.getDate() + 3);
-  const threeDaysStr = threeDaysLater.toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
-
-  const upcomingGames = (cpblData.games || []).filter(
-    g => g.date >= todayStr && g.date <= threeDaysStr && g.status !== 'cancelled'
-  );
-
-  console.log(`[cheerleader] 找到 ${upcomingGames.length} 場近期賽事`);
-
-  // 讀取現有班表資料
-  let cheerleaderData = { updated_at: '', schedule: [] };
-  try {
-    cheerleaderData = JSON.parse(fs.readFileSync(CHEERLEADER_PATH, 'utf-8'));
-  } catch (_) {}
-
-  const existingIds = new Set(cheerleaderData.schedule.map(s => s.game_id));
-  let updated = false;
-
-  for (const game of upcomingGames) {
-    // 從 game.id 中提取 GameSno（格式：cpbl-YYYYMMDD-NNN）
-    const snoMatch = game.id.match(/cpbl-\d{8}-(\d+)/);
-    if (!snoMatch) continue;
-    const gameSno = parseInt(snoMatch[1], 10);
-
-    if (existingIds.has(game.id)) {
-      console.log(`[cheerleader] 跳過已有資料：${game.id}`);
-      continue;
+  // 建立 date+homeTeam → game_id 對照表
+  const gameMap = {};
+  if (cpblData) {
+    for (const g of cpblData.games || []) {
+      const key = `${g.date}|${normalizeTeam(g.homeTeam || g.home_team)}`;
+      gameMap[key] = g.id;
     }
-
-    console.log(`[cheerleader] 抓取 ${game.id}（場次 ${gameSno}）...`);
-    const cheerleaders = await fetchCheerleadersForGame(gameSno);
-
-    if (cheerleaders.length > 0) {
-      cheerleaderData.schedule.push({
-        game_id: game.id,
-        date: game.date,
-        venue: game.venue,
-        home_team: game.home_team,
-        away_team: game.away_team,
-        cheerleaders,
-      });
-      existingIds.add(game.id);
-      updated = true;
-      console.log(`[cheerleader] ${game.id} 啦啦隊：${cheerleaders.join('、')}`);
-    }
-
-    // 避免請求過快
-    await new Promise(r => setTimeout(r, 1500));
   }
 
-  // 清理超過 60 天的舊資料
-  const cutoff = new Date(now);
-  cutoff.setDate(now.getDate() - 60);
-  const cutoffStr = cutoff.toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
-  cheerleaderData.schedule = cheerleaderData.schedule.filter(s => s.date >= cutoffStr);
+  // ── 轉換 SportsEvent → schedule 項目 ─────────────────────────
+  const schedule = [];
+  for (const ev of events) {
+    if (ev['@type'] !== 'SportsEvent') continue;
 
-  // 更新 cheerleader.json
-  cheerleaderData.updated_at = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' }).replace(' ', 'T') + '+08:00';
-  fs.writeFileSync(CHEERLEADER_PATH, JSON.stringify(cheerleaderData, null, 2), 'utf-8');
-  console.log(`[cheerleader] ✅ 班表已更新（共 ${cheerleaderData.schedule.length} 筆）`);
+    const performers = (ev.performer || []).map(p => p.name).filter(Boolean);
+    if (performers.length === 0) continue;
 
-  // 反向注入 cpbl.json 的 game.cheerleaders 欄位
-  if (updated) {
+    // 解析日期（格式：2026-04-19T16:05:00+08:00）
+    const dateStr = (ev.startDate || '').slice(0, 10); // 取 YYYY-MM-DD
+    if (!dateStr) continue;
+
+    const homeTeam = normalizeTeam(ev.homeTeam?.name || '');
+    const awayTeam = normalizeTeam(ev.awayTeam?.name || '');
+    const venue = normalizeVenue(ev.location?.name || '');
+
+    const key = `${dateStr}|${homeTeam}`;
+    const gameId = gameMap[key] || null;
+
+    schedule.push({
+      game_id: gameId,
+      date: dateStr,
+      venue,
+      home_team: homeTeam,
+      away_team: awayTeam,
+      cheerleaders: performers,
+    });
+  }
+
+  // 依日期排序
+  schedule.sort((a, b) => a.date.localeCompare(b.date));
+
+  // ── 寫入 cheerleader.json ─────────────────────────────────────
+  const output = {
+    _note: '啦啦隊班表，由爬蟲自動更新。資料來源：cpblgirls.tw',
+    updated_at: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' }).replace(' ', 'T') + '+08:00',
+    schedule,
+  };
+  fs.writeFileSync(CHEERLEADER_PATH, JSON.stringify(output, null, 2), 'utf-8');
+  console.log(`[cheerleader] ✅ 班表已更新（共 ${schedule.length} 筆，${schedule.filter(s => s.game_id).length} 筆已對應 game_id）`);
+
+  // ── 反向注入 cpbl.json 的 game.cheerleaders ──────────────────
+  if (cpblData) {
     const cheerMap = {};
-    for (const s of cheerleaderData.schedule) {
-      cheerMap[s.game_id] = s.cheerleaders;
+    for (const s of schedule) {
+      if (s.game_id) cheerMap[s.game_id] = s.cheerleaders;
     }
     let injected = 0;
-    for (const game of cpblData.games) {
+    for (const game of cpblData.games || []) {
       if (cheerMap[game.id]) {
         game.cheerleaders = cheerMap[game.id];
         injected++;
       }
     }
     if (injected > 0) {
-      cpblData.updated_at = cheerleaderData.updated_at;
+      cpblData.updated_at = output.updated_at;
       fs.writeFileSync(CPBL_PATH, JSON.stringify(cpblData, null, 2), 'utf-8');
       console.log(`[cheerleader] 注入 ${injected} 場次的啦啦隊資料至 cpbl.json`);
     }
@@ -152,9 +144,8 @@ async function crawl() {
 }
 
 if (require.main === module) {
-  crawl().catch(async (err) => {
+  crawl().catch(err => {
     console.error('[cheerleader] 爬蟲失敗：', err.message);
-    await sendAlert('cheerleader', '啦啦隊班表爬蟲失敗', err).catch(() => {});
     process.exit(1);
   });
 }

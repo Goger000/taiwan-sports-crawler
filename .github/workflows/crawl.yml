@@ -51,8 +51,12 @@ jobs:
             node src/plg.js  || echo "⚠️ PLG 爬蟲失敗"
           fi
 
-      # 啦啦隊班表：CPBL 官網為 JS 渲染，自動爬蟲無法取得，改為人工維護 cheerleader.json
-      # - name: 執行啦啦隊班表爬蟲（已停用）
+      - name: 執行啦啦隊班表爬蟲（cpblgirls.tw JSON-LD）
+        continue-on-error: true
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        run: |
+          node src/cheerleader.js || echo "⚠️ 啦啦隊爬蟲失敗，使用已有資料"
 
       - name: 合併 _headers 與靜態資料
         run: |

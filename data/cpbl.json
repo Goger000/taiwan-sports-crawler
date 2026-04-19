@@ -1,7 +1,7 @@
 {
   "league": "cpbl",
   "sport_type": "baseball",
-  "updated_at": "2026-04-12T21:59:31+08:00",
+  "updated_at": "2026-04-19T09:54:06+08:00",
   "games": [
     {
       "id": "cpbl-20260328-001",
@@ -659,7 +659,24 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "尼莫",
+        "芋頭",
+        "螢螢",
+        "一粒",
+        "妡0",
+        "瑈瑈",
+        "玖玖",
+        "林浠",
+        "米亞Mia",
+        "昆昆",
+        "艾琳",
+        "安芝儇",
+        "ET",
+        "筱雯",
+        "米妮"
+      ]
     },
     {
       "id": "cpbl-20260419-048",
@@ -673,7 +690,30 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "賴可",
+        "蘿拉",
+        "金娜妍",
+        "佩霓",
+        "沛沛",
+        "口水",
+        "群群",
+        "李多慧",
+        "佳依",
+        "權喜原",
+        "芮妮",
+        "霖霖",
+        "陳洛心",
+        "心璇",
+        "林襄",
+        "靜靜",
+        "各務禮美奈",
+        "小映",
+        "貝拉",
+        "姵宸",
+        "璦昀"
+      ]
     },
     {
       "id": "cpbl-20260419-049",
@@ -687,7 +727,27 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "Jessy",
+        "禾羽",
+        "栗子",
+        "維心",
+        "陳愉",
+        "李晧禎",
+        "李珠珢",
+        "小芊",
+        "檸檬",
+        "沁沁",
+        "奶昔",
+        "呱呱",
+        "安娜",
+        "李雅英",
+        "貝兒",
+        "潔潔",
+        "Laynee",
+        "潔米"
+      ]
     },
     {
       "id": "cpbl-20260421-050",
@@ -701,7 +761,23 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "少少",
+        "Yuki",
+        "子筑",
+        "安琪",
+        "Joy",
+        "希美 Nozomi",
+        "一七",
+        "侯芳",
+        "林妮妮",
+        "芮絲",
+        "Maggie小美",
+        "培根",
+        "冞冞",
+        "瑟七"
+      ]
     },
     {
       "id": "cpbl-20260421-051",
@@ -715,7 +791,22 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "MIKA",
+        "禹菡",
+        "林岱縈",
+        "Kira",
+        "孟潔",
+        "若潼",
+        "高佳彬",
+        "崔荷潾",
+        "言梓璇",
+        "貝佳頤",
+        "熊霓",
+        "筠熹",
+        "穆又甯"
+      ]
     },
     {
       "id": "cpbl-20260422-052",
@@ -729,7 +820,23 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "瑟七",
+        "少少",
+        "Yuki",
+        "子筑",
+        "安琪",
+        "Joy",
+        "希美 Nozomi",
+        "一七",
+        "侯芳",
+        "林妮妮",
+        "芮絲",
+        "Maggie小美",
+        "培根",
+        "冞冞"
+      ]
     },
     {
       "id": "cpbl-20260422-053",
@@ -743,7 +850,21 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "穆又甯",
+        "笑笑",
+        "林岱縈",
+        "彭彭",
+        "孟潔",
+        "若潼",
+        "高佳彬",
+        "卉妮",
+        "崔荷潾",
+        "言梓璇",
+        "沈珈妤KAii",
+        "熊霓"
+      ]
     },
     {
       "id": "cpbl-20260422-054",
@@ -757,7 +878,17 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "黃澄澄",
+        "千千",
+        "一粒",
+        "玖玖",
+        "恬魚",
+        "米亞Mia",
+        "昆昆",
+        "艾琳"
+      ]
     },
     {
       "id": "cpbl-20260423-055",
@@ -771,7 +902,21 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "李樂",
+        "筱雯",
+        "艾琳",
+        "米妮",
+        "芋頭",
+        "黃澄澄",
+        "螢螢",
+        "妡0",
+        "千千",
+        "一粒",
+        "玖玖",
+        "米亞Mia"
+      ]
     },
     {
       "id": "cpbl-20260424-056",
@@ -785,7 +930,23 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "Maggie小美",
+        "文慧真",
+        "冞冞",
+        "包子",
+        "瑟七",
+        "少少",
+        "子筑",
+        "Joy",
+        "希美 Nozomi",
+        "一七",
+        "侯芳",
+        "姸蓁",
+        "斐棋",
+        "千紘 Chihiro"
+      ]
     },
     {
       "id": "cpbl-20260424-057",
@@ -799,7 +960,26 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "波波",
+        "容容",
+        "莎莎",
+        "菊池桃子",
+        "衣宸",
+        "沛婕",
+        "短今",
+        "怡琪",
+        "妮可",
+        "金渡兒",
+        "珮含",
+        "貴貴",
+        "維尼",
+        "昀二",
+        "曼容",
+        "少鹽",
+        "JJUBI（朴善珠）"
+      ]
     },
     {
       "id": "cpbl-20260424-058",
@@ -813,7 +993,29 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "熊霓",
+        "Kira",
+        "琳妲",
+        "MIKA",
+        "禹菡",
+        "高橋佳帆KAHO",
+        "笑笑",
+        "林岱縈",
+        "彭彭",
+        "孟潔",
+        "若潼",
+        "金佳垠",
+        "林穎樂",
+        "卉妮",
+        "廉世彬",
+        "曲曲",
+        "宋宋",
+        "貝佳頤",
+        "筠熹",
+        "沈珈妤KAii"
+      ]
     },
     {
       "id": "cpbl-20260425-059",
@@ -827,7 +1029,32 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "曼萍",
+        "若婷",
+        "斐棋",
+        "千紘 Chihiro",
+        "賴賴",
+        "文慧真",
+        "冞冞",
+        "包子",
+        "Yuki",
+        "羽娜",
+        "安琪",
+        "瑟七",
+        "藤本彩花",
+        "趙娟週",
+        "少少",
+        "子筑",
+        "Joy",
+        "沐沐",
+        "小妤",
+        "林妮妮",
+        "一七",
+        "侯芳",
+        "姸蓁"
+      ]
     },
     {
       "id": "cpbl-20260425-060",
@@ -841,7 +1068,26 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "曼容",
+        "少鹽",
+        "JJUBI（朴善珠）",
+        "波波",
+        "容容",
+        "莎莎",
+        "菊池桃子",
+        "衣宸",
+        "沛婕",
+        "短今",
+        "怡琪",
+        "妮可",
+        "金渡兒",
+        "珮含",
+        "貴貴",
+        "維尼",
+        "昀二"
+      ]
     },
     {
       "id": "cpbl-20260425-061",
@@ -855,7 +1101,28 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "筠熹",
+        "穆又甯",
+        "熊霓",
+        "Kira",
+        "琳妲",
+        "禹菡",
+        "高橋佳帆KAHO",
+        "溫妮",
+        "林岱縈",
+        "彭彭",
+        "崔荷潾",
+        "孟潔",
+        "若潼",
+        "金佳垠",
+        "卉妮",
+        "廉世彬",
+        "曲曲",
+        "宋宋",
+        "貝佳頤"
+      ]
     },
     {
       "id": "cpbl-20260426-062",
@@ -869,7 +1136,32 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "一七",
+        "侯芳",
+        "姸蓁",
+        "曼萍",
+        "若婷",
+        "斐棋",
+        "千紘 Chihiro",
+        "賴賴",
+        "姿琳",
+        "文慧真",
+        "冞冞",
+        "包子",
+        "羽娜",
+        "安琪",
+        "瑟七",
+        "藤本彩花",
+        "趙娟週",
+        "少少",
+        "子筑",
+        "Joy",
+        "沐沐",
+        "小妤",
+        "林妮妮"
+      ]
     },
     {
       "id": "cpbl-20260426-063",
@@ -883,7 +1175,26 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "維尼",
+        "昀二",
+        "曼容",
+        "少鹽",
+        "JJUBI（朴善珠）",
+        "波波",
+        "容容",
+        "莎莎",
+        "菊池桃子",
+        "衣宸",
+        "沛婕",
+        "短今",
+        "怡琪",
+        "妮可",
+        "金渡兒",
+        "珮含",
+        "貴貴"
+      ]
     },
     {
       "id": "cpbl-20260426-064",
@@ -897,7 +1208,25 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "卉妮",
+        "廉世彬",
+        "曲曲",
+        "宋宋",
+        "貝佳頤",
+        "穆又甯",
+        "熊霓",
+        "Kira",
+        "琳妲",
+        "高橋佳帆KAHO",
+        "溫妮",
+        "林岱縈",
+        "崔荷潾",
+        "孟潔",
+        "若潼",
+        "金佳垠"
+      ]
     },
     {
       "id": "cpbl-20260428-065",
@@ -911,7 +1240,25 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "陳洛心",
+        "瑄瑄",
+        "寧寧",
+        "各務禮美奈",
+        "金娜妍",
+        "小蛙",
+        "沛沛",
+        "貝拉",
+        "群群",
+        "馬妹",
+        "菲菲",
+        "張愛",
+        "權喜原",
+        "芮妮",
+        "心璇",
+        "張晴"
+      ]
     },
     {
       "id": "cpbl-20260428-066",
@@ -925,7 +1272,22 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "貝兒",
+        "潔潔",
+        "Laynee",
+        "潔米",
+        "Jessy",
+        "栗子",
+        "陳愉",
+        "李晧禎",
+        "小芊",
+        "卡洛琳",
+        "沁沁",
+        "大頭",
+        "呱呱"
+      ]
     },
     {
       "id": "cpbl-20260429-067",
@@ -939,7 +1301,25 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "心璇",
+        "張晴",
+        "陳洛心",
+        "璦昀",
+        "蘿拉",
+        "寧寧",
+        "佩霓",
+        "小映",
+        "各務禮美奈",
+        "金娜妍",
+        "小蛙",
+        "沛沛",
+        "貝拉",
+        "張愛",
+        "馬妹",
+        "權喜原"
+      ]
     },
     {
       "id": "cpbl-20260429-068",
@@ -953,7 +1333,22 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "鄔語葶",
+        "禾羽",
+        "維心",
+        "潔潔",
+        "Laynee",
+        "潔米",
+        "李晧禎",
+        "小芊",
+        "奶昔",
+        "安娜",
+        "雅惟",
+        "丹丹",
+        "呱呱"
+      ]
     },
     {
       "id": "cpbl-20260429-069",
@@ -967,7 +1362,19 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "芊芊",
+        "璇璇",
+        "Wendy",
+        "JJUBI（朴善珠）",
+        "波波",
+        "菊池桃子",
+        "衣宸",
+        "怡琪",
+        "汶汶",
+        "君白"
+      ]
     },
     {
       "id": "cpbl-20260430-070",
@@ -981,7 +1388,19 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "衣宸",
+        "怡琪",
+        "汶汶",
+        "君白",
+        "芊芊",
+        "璇璇",
+        "Wendy",
+        "JJUBI（朴善珠）",
+        "波波",
+        "菊池桃子"
+      ]
     },
     {
       "id": "cpbl-20260501-071",
@@ -2563,7 +2982,25 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "晴兒",
+        "峮峮",
+        "瑄",
+        "莎莎",
+        "容容",
+        "希希",
+        "凱蒂",
+        "璇璇",
+        "妮可",
+        "邊荷律",
+        "貴貴",
+        "昀二",
+        "冼迪琦",
+        "君白",
+        "牛奶",
+        "波波"
+      ]
     },
     {
       "id": "cpbl-20260627-015",
@@ -2577,7 +3014,36 @@
       "away_score": null,
       "inning": null,
       "broadcast": [],
-      "ticket_url": null
+      "ticket_url": null,
+      "cheerleaders": [
+        "陳愉",
+        "李晧禎",
+        "李珠珢",
+        "小芊",
+        "檸檬",
+        "慈妹",
+        "沁沁",
+        "奶昔",
+        "南珉貞",
+        "呱呱",
+        "安娜",
+        "秀秀子",
+        "卡洛琳",
+        "珈嘉",
+        "朴星垠",
+        "李雅英",
+        "大頭",
+        "雅惟",
+        "貝兒",
+        "Laynee",
+        "潔米",
+        "禾羽",
+        "Jessy",
+        "栗子",
+        "維心",
+        "鄔語葶",
+        "妮塔"
+      ]
     },
     {
       "id": "cpbl-20260703-181",
